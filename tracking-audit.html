@@ -1,0 +1,651 @@
+<title>Full Tracking Audit: WRK Marketing</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  --paper:#F5F3ED;
+  --surface:#FFFFFF;
+  --ink:#1B2420;
+  --ink-soft:#4A554E;
+  --ink-faint:#7C877F;
+  --line:#DCD8C9;
+  --accent:#245C55;
+  --accent-ink:#0F332E;
+  --accent-soft:#DEEAE6;
+  --warn:#A8641E;
+  --warn-soft:#F3E4D0;
+  --crit:#9B3B3B;
+  --crit-soft:#F5DEDE;
+  --shadow: 0 1px 2px rgba(20,30,25,0.06), 0 8px 24px -12px rgba(20,30,25,0.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#121714;
+    --surface:#182420;
+    --ink:#EAE7DD;
+    --ink-soft:#9AA69E;
+    --ink-faint:#68746D;
+    --line:#2B3630;
+    --accent:#63BFB1;
+    --accent-ink:#DCF4EF;
+    --accent-soft:#1C332F;
+    --warn:#E0A458;
+    --warn-soft:#332616;
+    --crit:#E08080;
+    --crit-soft:#3A2222;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121714;
+  --surface:#182420;
+  --ink:#EAE7DD;
+  --ink-soft:#9AA69E;
+  --ink-faint:#68746D;
+  --line:#2B3630;
+  --accent:#63BFB1;
+  --accent-ink:#DCF4EF;
+  --accent-soft:#1C332F;
+  --warn:#E0A458;
+  --warn-soft:#332616;
+  --crit:#E08080;
+  --crit-soft:#3A2222;
+  --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Public Sans', system-ui, -apple-system, sans-serif;
+  line-height:1.55;
+}
+::selection{background:var(--accent-soft);color:var(--accent-ink)}
+
+.wrap{
+  max-width:1160px;
+  margin:0 auto;
+  padding:44px 24px 90px;
+  display:grid;
+  grid-template-columns:230px minmax(0,1fr);
+  gap:44px;
+}
+@media (max-width:880px){
+  .wrap{grid-template-columns:1fr; padding:26px 16px 56px;}
+  .rail{position:static !important; order:2; margin-bottom:8px;}
+}
+
+/* ---------- Header ---------- */
+.hero{grid-column:1/-1; margin-bottom:6px;}
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11.5px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--accent);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:14px;
+}
+.eyebrow::before{
+  content:"";
+  width:7px;height:7px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-soft);
+}
+h1{
+  font-family:'Newsreader', serif;
+  font-weight:500;
+  font-style:italic;
+  font-size:clamp(30px,4vw,42px);
+  line-height:1.1;
+  letter-spacing:-0.01em;
+  text-wrap:balance;
+  margin:0 0 14px;
+  color:var(--ink);
+}
+.dek{
+  max-width:64ch;
+  color:var(--ink-soft);
+  font-size:15.5px;
+  margin:0 0 22px;
+}
+.dek b{color:var(--ink); font-weight:600;}
+
+.hero-meta{
+  padding:16px 20px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:10px;
+  box-shadow:var(--shadow);
+}
+.hero-meta-top{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 26px;
+  align-items:center;
+}
+.progress-block{flex:1 1 250px; min-width:210px;}
+.progress-label{
+  display:flex; justify-content:space-between;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px; color:var(--ink-faint);
+  letter-spacing:0.03em;
+  margin-bottom:7px;
+}
+#overallCount{color:var(--ink); font-weight:500;}
+.progress-track{
+  height:7px; border-radius:99px;
+  background:var(--line);
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%; width:0%;
+  background:var(--accent);
+  border-radius:99px;
+  transition:width .35s ease;
+}
+.meta-stats{display:flex; gap:20px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-faint); white-space:nowrap;}
+.meta-stats b{color:var(--ink); font-weight:500;}
+.reset-btn{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.02em;
+  color:var(--ink-faint);
+  background:none;
+  border:1px solid var(--line);
+  padding:7px 12px;
+  border-radius:7px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.reset-btn:hover{border-color:var(--ink-faint); color:var(--ink);}
+.reset-btn:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible, .check-row:focus-within{outline:2px solid var(--accent); outline-offset:2px;}
+
+.legend{
+  display:flex; flex-wrap:wrap; gap:8px 22px;
+  margin-top:14px; padding-top:14px;
+  border-top:1px solid var(--line);
+  font-size:12.5px; color:var(--ink-soft);
+}
+.legend-item{display:inline-flex; align-items:center; gap:8px;}
+.legend-dot{width:9px; height:9px; border-radius:50%; flex:0 0 9px;}
+.legend-dot.crit{background:var(--crit);}
+.legend-dot.high{background:var(--warn);}
+.legend-dot.std{background:var(--accent);}
+
+.escalation{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 10px;
+  margin-top:14px; padding:12px 16px;
+  background:var(--accent-soft);
+  border-left:3px solid var(--accent);
+  border-radius:8px;
+  font-size:13px; color:var(--ink);
+}
+.escalation-label{
+  font-family:'IBM Plex Mono',monospace; font-size:10.5px;
+  letter-spacing:0.06em; text-transform:uppercase;
+  color:var(--accent); flex:0 0 auto;
+}
+
+/* ---------- Rail ---------- */
+.rail{
+  position:sticky; top:26px; align-self:start;
+  display:flex; flex-direction:column; gap:2px;
+}
+.rail-title{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--ink-faint); margin:0 0 10px 10px;
+}
+.rail a{
+  display:flex; justify-content:space-between; gap:8px;
+  text-decoration:none;
+  color:var(--ink-soft);
+  font-size:13px;
+  padding:8px 10px;
+  border-radius:7px;
+  border-left:2px solid transparent;
+}
+.rail a:hover{background:var(--surface); color:var(--ink);}
+.rail a.active{border-left-color:var(--accent); color:var(--ink); font-weight:600; background:var(--surface);}
+.rail .sect-count{
+  font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-faint);
+  font-variant-numeric:tabular-nums;
+}
+
+/* ---------- Sections ---------- */
+main{min-width:0;}
+section.mod{margin-bottom:40px; scroll-margin-top:22px;}
+.mod-head{
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:6px;
+  padding-bottom:13px;
+  border-bottom:1px solid var(--line);
+}
+.mod-num{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:26px; height:26px; flex:0 0 26px;
+  border-radius:7px;
+  background:var(--accent-soft); color:var(--accent);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px; font-weight:600;
+}
+.mod-head h2{
+  font-family:'Newsreader',serif; font-weight:600; font-style:normal; font-size:21px;
+  margin:0; flex:1; text-wrap:balance;
+}
+.mod-sub{
+  color:var(--ink-faint); font-size:13px;
+  margin:10px 0 18px;
+  max-width:70ch;
+}
+
+.check-row{
+  display:grid;
+  grid-template-columns:26px 1fr;
+  gap:14px;
+  padding:14px 4px 14px 13px;
+  border-bottom:1px solid var(--line);
+  border-left:3px solid var(--line);
+}
+.check-row[data-sev="crit"]{border-left-color:var(--crit);}
+.check-row[data-sev="high"]{border-left-color:var(--warn);}
+.check-row[data-sev="std"]{border-left-color:var(--accent);}
+.check-row:last-child{border-bottom:none;}
+.chk{
+  width:18px; height:18px; margin-top:2px;
+  accent-color:var(--accent);
+  cursor:pointer;
+}
+.row-body label{cursor:pointer; display:block;}
+.row-top{
+  display:flex; flex-wrap:wrap; align-items:center; gap:9px; margin-bottom:7px;
+}
+.code{
+  font-family:'IBM Plex Mono',monospace; font-size:11px;
+  color:var(--ink-faint);
+}
+.tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px; letter-spacing:0.04em; text-transform:uppercase;
+  padding:2px 7px; border-radius:99px;
+  font-weight:500;
+}
+.tag.crit{background:var(--crit-soft); color:var(--crit);}
+.tag.high{background:var(--warn-soft); color:var(--warn);}
+.tag.std{background:var(--accent-soft); color:var(--accent);}
+.check-title{
+  font-size:14.5px; font-weight:600; color:var(--ink);
+}
+.check-row.done .check-title{color:var(--ink-faint); text-decoration:line-through; text-decoration-color:var(--line); font-weight:500;}
+.check-row.done .tag{opacity:0.5;}
+.field{margin-top:8px; max-width:70ch; display:flex; flex-direction:column; gap:2px;}
+.field-label{
+  font-family:'IBM Plex Mono',monospace; font-size:10px;
+  letter-spacing:0.07em; text-transform:uppercase;
+  color:var(--ink-faint);
+}
+.field-value{font-size:13.5px; color:var(--ink-soft);}
+
+.impl{margin-top:10px;}
+.impl summary{
+  list-style:none;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.02em;
+  color:var(--accent);
+  padding:4px 0;
+}
+.impl summary::-webkit-details-marker{display:none;}
+.impl summary::before{
+  content:"+";
+  display:inline-flex; align-items:center; justify-content:center;
+  width:14px; height:14px; border-radius:4px;
+  border:1px solid var(--accent);
+  font-size:11px; line-height:1;
+}
+.impl[open] summary::before{content:"\2212";}
+.impl-body{
+  font-size:13px; color:var(--ink-soft);
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:11px 13px;
+  margin-top:6px;
+  max-width:68ch;
+}
+
+footer{
+  grid-column:1/-1;
+  margin-top:14px;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+  font-size:12px; color:var(--ink-faint);
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+}
+</style>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">WRK Marketing · Tracking and Measurement Audit</div>
+    <h1>Full Tracking Audit</h1>
+    <p class="dek">A working checklist for confirming that the tracking feeding Smart Bidding, attribution, and reporting in the Google Ads account is accurate. <b>49 checks</b> across 8 sections. Within each section, critical checks come first, then high, then standard, keeping focus on what matters most. Checked items are saved in this browser.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-top">
+        <div class="progress-block">
+          <div class="progress-label"><span>Overall progress</span><span id="overallCount">0 / 0</span></div>
+          <div class="progress-track"><div class="progress-fill" id="overallFill"></div></div>
+        </div>
+        <div class="meta-stats">
+          <span><b id="critCount">0</b>/0 critical</span>
+          <span><b id="highCount">0</b>/0 high</span>
+        </div>
+        <button class="reset-btn" id="resetBtn">Reset checklist</button>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-dot crit"></span>Critical: breaks tracking outright</span>
+        <span class="legend-item"><span class="legend-dot high"></span>High: meaningfully distorts data or bidding</span>
+        <span class="legend-item"><span class="legend-dot std"></span>Standard: good practice, worth confirming</span>
+      </div>
+    </div>
+    <div class="escalation">
+      <span class="escalation-label">Note</span>
+      <span>If a step needs account access that is not available, escalate to Agustin or Jonathan instead of skipping it.</span>
+    </div>
+  </div>
+
+  <nav class="rail" id="rail">
+    <div class="rail-title">Sections</div>
+  </nav>
+
+  <main id="main"></main>
+
+  <footer>
+    <span>Re-run this audit every quarter, and after any change to the site, CRM, or consent setup.</span>
+    <span>Based on current Google Ads and GA4 documentation, September 2026</span>
+  </footer>
+</div>
+
+<script>
+const DATA = [
+  {
+    id:"F", title:"Account Foundation and Access",
+    sub:"Confirms the account can measure anything correctly in the first place. If something here is broken, every other check in this list is unreliable.",
+    items:[
+      {t:"Auto-tagging (GCLID) is enabled at the account level", w:"Without auto-tagging, Google Ads cannot connect a click to a conversion. Every other check in this audit depends on this being on.", h:"Account settings, Auto-tagging, confirm it is on.", sev:"crit",
+       impl:"Open Google Ads, click the Settings (gear) icon, go to Account settings, and check Auto-tagging. Make sure \"Tag the URL that people click through from my ads\" is turned on, then save."},
+      {t:"The Google tag fires on every page, including checkout and thank-you pages", w:"A tag missing from even one step of the funnel breaks conversion counting for that step only, which is easy to miss.", h:"Check Google Tag Manager preview mode or the browser network tab on the homepage, a category page, checkout, and the thank-you page.", sev:"crit",
+       impl:"Add the Google tag through Google Tag Manager as an Initialization, All Pages tag, with a Conversion Linker tag set the same way. Confirm the container is published on every template, including checkout and thank-you pages."},
+      {t:"Third-party attribution tools are not silently changing the tracking setup", w:"Tools like Triple Whale and Polar Analytics can automatically apply their own tracking parameters to campaigns. If this runs unnoticed, it can override or conflict with the existing setup and break tracking without warning.", h:"Check each connected tool's settings for an auto-apply or auto-sync feature, and compare its last change date against the account's tracking template history.", sev:"crit",
+       impl:"In Triple Whale, check whether Tracking Parameter Taxi is turned on. It applies tracking parameters to new campaigns and ad groups automatically, once a day. In Polar Analytics, check whether automatic UTM setup is turned on for Google Ads. If either is active, confirm it matches the naming convention in use, or turn it off if UTMs are managed manually."},
+      {t:"Only one Google tag exists per domain", w:"Duplicate tags, for example an old snippet left in place alongside a newer GTM container, fire twice and inflate conversions.", h:"View page source or the GTM container for more than one gtag('config', ...) call.", sev:"high",
+       impl:"When more than one gtag('config', ...) call exists for the same account, remove the older one, typically a legacy snippet left over from before Tag Manager was installed, and keep only the tag published through Google Tag Manager."},
+      {t:"Final URLs and destination URLs do not break the GCLID redirect chain", w:"Redirect hops, such as tracking templates, URL shorteners, or CMS redirects, can strip the gclid parameter before it reaches the landing page.", h:"Click a live ad in a private browser window and inspect the URL at each redirect hop.", sev:"high",
+       impl:"Remove any redirect hop that is not strictly necessary, in the tracking template or CMS redirect rules. Where a redirect service or URL shortener is unavoidable, confirm it forwards the full query string rather than only the base URL."},
+      {t:"GA4, Merchant Center, and Business Profile are linked to the correct Google Ads account", w:"A missing or wrong link means GA4 key events, Shopping data, or local actions never reach the account they are supposed to optimize.", h:"Tools and Settings, Linked accounts.", sev:"std",
+       impl:"In Google Ads, click Admin, then Linked accounts, and open Details next to Google Analytics, Merchant Center, or Business Profile. You need edit access on both sides, and auto-tagging must already be on for the Google Analytics link."},
+      {t:"The account-level conversion tracking status shows healthy", w:"A status like \"no recent conversions\" is Google's own warning sign and should be treated as an active alert, not background noise.", h:"Conversions summary page, status column.", sev:"std"},
+      {t:"Agency, freelancer, and former employee access has been reviewed", w:"Old access left active is a security risk, and it means someone could change tracking settings without anyone noticing.", h:"Admin, Access and security, review the user list.", sev:"std"}
+    ]
+  },
+  {
+    id:"C", title:"Conversion Actions Configuration",
+    sub:"These are the exact actions Smart Bidding optimizes toward. If they are defined wrong, automated bidding spends budget chasing the wrong outcome.",
+    items:[
+      {t:"Every conversion action maps to a real business outcome", w:"Counting page scrolls or button clicks as conversions trains bidding to chase cheap, meaningless actions instead of real ones.", h:"List every active conversion action and ask whether a salesperson would call it a win.", sev:"crit",
+       impl:"For any action that is not a real outcome, such as a page view or scroll depth, go to Goals, Conversions, Summary, and either mark it secondary or remove it, so only genuine outcomes are used for bidding."},
+      {t:"Primary and secondary conversions are correctly separated", w:"Only primary actions feed the Conversions column that Smart Bidding optimizes toward. A newsletter sign-up marked as primary competes with real purchases for budget.", h:"Conversions, Summary, check the Primary/Secondary column on each action.", sev:"crit",
+       impl:"Go to Goals, then Conversions, then Summary. Open each conversion action and check the Primary/Secondary column. Change any action that is not a real bottom-of-funnel outcome to secondary."},
+      {t:"No duplicate primary conversion actions exist for the same goal", w:"Two overlapping actions both marked primary, for example a native Purchase tag and an imported GA4 Purchase event, double count and distort ROAS.", h:"Cross-check native tag conversions against imported GA4 key events for overlap.", sev:"crit",
+       impl:"When two primary actions cover the same outcome, mark one of them secondary under Goals, Conversions, Summary. This is the same place used for the primary/secondary check above."},
+      {t:"The conversion counting setting matches the action type", w:"A lead form should usually count once per click. A purchase should count every time. Reversed, one inflates leads and the other undercounts repeat purchases.", h:"Edit each conversion action and check the Count field.", sev:"high",
+       impl:"Open the conversion action, go to its settings, and check the Count field. Use \"Every\" for purchases and repeatable actions, and \"One\" for a single action per person, like a sign-up or a lead form."},
+      {t:"Conversion values are real, not a flat placeholder", w:"Value-based bidding cannot work if every lead or sale is valued the same regardless of actual size.", h:"Compare conversion values in Ads against real CRM deal values for a sample of recent leads or orders.", sev:"high",
+       impl:"Pull a sample of recent leads or orders from the CRM and compare their real value to what is recorded in Google Ads. If they do not match, update the conversion action's value setting, or pass the actual transaction value through the tag instead of a fixed number."},
+      {t:"Conversion windows match the real sales cycle", w:"A 7-day window on a business with a 45-day sales cycle discards most real conversions before they are counted.", h:"Edit the conversion action and check the conversion window settings.", sev:"std",
+       impl:"Open the conversion action settings and adjust the click-through and view-through conversion windows to match how long a typical sale actually takes, from the first click to purchase or lead."},
+      {t:"The attribution model was chosen deliberately, not left on an unexamined default", w:"Data-driven attribution is usually right, but it needs enough conversion volume to work well. A low-volume account may be better served by a simpler model.", h:"Check the conversion action's attribution model setting against its monthly conversion volume.", sev:"std",
+       impl:"Open the conversion action, go to settings, and check the Attribution model field. Data-driven is the default and usually correct, but for low-volume actions consider a simpler model instead."},
+      {t:"Old or unused conversion actions are archived, not left active", w:"Dead actions clutter reporting and can accidentally get marked primary again during a later account change.", h:"Conversions, Summary, sort by the date of the most recent recorded conversion.", sev:"std"}
+    ]
+  },
+  {
+    id:"E", title:"Enhanced Conversions and Server-Side Tracking",
+    sub:"Browser-only tracking misses a real share of conversions. This section confirms the recovery layer, enhanced conversions and server-side data, is actually working.",
+    items:[
+      {t:"Enhanced conversions for web shows a Recording status, not just enabled", w:"Turning the setting on does not guarantee it is actually capturing hashed user data. The diagnostics status is the only real proof.", h:"Conversions, diagnostics column, on each web conversion action.", sev:"crit",
+       impl:"Go to Goals, then Settings, and open Enhanced conversions. Turn it on, accept the customer data terms, and choose Google tag as the data source. Google can auto-detect user data on the site's forms, or specific fields can be selected manually."},
+      {t:"Enhanced conversions for leads is set up for form and CRM-based conversions", w:"Without it, offline sales and longer-cycle leads lose most of their match rate. Advertisers using it alongside GCLID typically see a meaningful increase in matched conversions.", h:"Conversions, new conversion action, Enhanced conversions for leads.", sev:"high",
+       impl:"In Google Tag Manager, add a Conversion Linker tag set to fire on Initialization, All Pages. Then set up the Google tag to capture hashed user data, such as email or phone, on the lead form, and connect it to a matching offline import."},
+      {t:"User-provided data is actually captured on lead and thank-you pages", w:"Enhanced conversions can only hash what the page collects. If a checkout does not expose email in the page or data layer, it cannot be matched.", h:"Inspect the data layer or GTM variable values on the confirmation page.", sev:"high",
+       impl:"Add a hidden field or a data layer push on the confirmation page that carries the submitted email or phone number, then map that value to Google's user-provided data variable in Tag Manager so enhanced conversions can read it."},
+      {t:"Match rate is reviewed on a regular basis", w:"A drop in match rate below the account's normal range usually means the implementation broke after a site update.", h:"Conversions, diagnostics, match rate trend over time.", sev:"high",
+       impl:"Set a recurring check, at least monthly, of Conversions, Diagnostics, match rate. If it drops well below the account's normal range, check for a recent site, CRM, or consent change first."},
+      {t:"Hashing is correct, if implemented manually rather than through Google's tag", w:"Manually hashed data with the wrong format, such as inconsistent casing or spacing, fails to match even when the underlying value is correct.", h:"Compare a test hash against Google's documented format rules.", sev:"std",
+       impl:"If Google's tag or the GTM template is in use, hashing happens automatically and should not be done manually. If data is sent through a direct API or CRM integration, follow Google's format exactly (lowercase, trimmed, phone numbers in E.164 format) before hashing with SHA256."},
+      {t:"Server-side tagging or a Conversion API is used for business-critical conversions", w:"Browser-only pixels lose a meaningful share of signal to tracking prevention and ad blockers. Server-side tagging sends the event directly from a server instead, without depending on the browser.", h:"Check whether a server container exists in GTM, or whether conversions route only through client-side tags.", sev:"std"},
+      {t:"Offline conversion imports show no unmatched-click or format errors", w:"A silently failing CRM-to-Ads import means sales-assisted conversions never reach the account at all.", h:"Conversions, uploads, check the error and warning count on the most recent import.", sev:"std",
+       impl:"Create a conversion action for offline imports under Goals, Conversions, Summary. Make sure the site captures the GCLID from the URL on ad clicks and stores it with the lead in the CRM, then upload conversions with a timestamp, GCLID, and value."}
+    ]
+  },
+  {
+    id:"G", title:"GA4 Integration and Signal Quality",
+    sub:"GA4 key events feed directly into Google Ads bidding for most accounts today. Audit them with the same care as native conversion actions.",
+    items:[
+      {t:"GA4 is properly linked to Google Ads, not just installed on the site", w:"Installed but unlinked is one of the most common findings in real audits. The data exists but never reaches the ad account.", h:"Google Ads, Tools, Linked accounts, Google Analytics.", sev:"crit",
+       impl:"In Google Ads, click Admin, then Linked accounts, and open Details next to Google Analytics. You need edit access on the Analytics property and admin access on Google Ads, and auto-tagging must already be on."},
+      {t:"Imported GA4 key events do not duplicate native Google Ads conversion actions", w:"The same purchase counted once through the native tag and again through an imported GA4 key event overstates conversions and confuses Smart Bidding.", h:"List native conversion actions next to imported key events and check for the same event counted twice.", sev:"crit",
+       impl:"When the same outcome exists as both a native Ads conversion and an imported GA4 key event, stop importing that key event under the Google Ads links section of GA4 Admin, or mark the native action secondary, so it is only counted once."},
+      {t:"Imported key events represent meaningful actions, not GA4 defaults", w:"GA4 automatically marks some low-intent events as key events. Importing these into Ads adds noise to the optimization signal.", h:"Admin, Events, review the key events list.", sev:"high",
+       impl:"In GA4, go to Admin, then Events, and review which events are marked as key events. Turn off any that do not represent a real action, and mark the ones that do."},
+      {t:"Data streams fire correctly across key pages, verified in DebugView", w:"A tag manager release with a small error can look fine in the browser but never actually reach GA4. DebugView is the only reliable proof.", h:"GA4 Admin, DebugView, walk through an organic session, a paid session, and a returning-visitor session.", sev:"high",
+       impl:"Open GA4 Admin, DebugView, and browse the site in a tagged debug session. Confirm each key page and event actually appears in the stream. If one is missing, check the GTM trigger for that page template."},
+      {t:"Cross-domain measurement is configured if checkout lives on a separate domain", w:"Without it, a visit that moves from the marketing site to a separate checkout domain looks like two different sessions, which breaks attribution.", h:"GA4 Admin, Data Streams, Configure tag settings, Configure your domains.", sev:"high",
+       impl:"In GA4, go to Admin, Data Streams, open the relevant web stream, then Configure tag settings, then Configure your domains. Add each domain that should count as one session, save, and confirm the _gl parameter appears in the URL when moving between domains."},
+      {t:"Internal traffic and known referral exclusions are configured", w:"Staff and agency visits, and payment gateway redirect domains, can otherwise appear as new sessions or referral sources and dilute the real numbers.", h:"GA4 Admin, Data Streams, Configure tag settings.", sev:"std",
+       impl:"In GA4, go to Admin, Data Streams, open the relevant web stream, then Configure tag settings. Use \"Define internal traffic\" to exclude staff and agency IPs, and \"List unwanted referrals\" to exclude payment gateway domains."},
+      {t:"E-commerce data matches actual order records", w:"A mismatch between GA4 revenue and real revenue usually points to a tracking bug, not a business change.", h:"Compare GA4 purchase revenue for a sample week against the order management system.", sev:"std"}
+    ]
+  },
+  {
+    id:"P", title:"Consent Mode and Compliance",
+    sub:"Consent signals now control how much of the site's traffic Google is allowed to measure. A broken consent setup quietly reduces the data without throwing an error.",
+    items:[
+      {t:"Consent Mode v2 sends all four signals: ad_storage, analytics_storage, ad_user_data, ad_personalization", w:"Google requires all four signals in regions like the EEA for ads personalization and remarketing to keep working. A partial setup is treated the same as no consent.", h:"Check the data layer or GTM tag firing order for all four parameters.", sev:"crit",
+       impl:"If a certified consent management platform is in use, it should update to Consent Mode v2 automatically, confirm this with the provider. If the banner was built in-house, all four signals need to be sent manually, set to denied by default and updated on consent, before any other tag fires."},
+      {t:"The consent banner sets signals before any tag loads, with the correct default", w:"If the Google tag loads before the banner sets consent state, it fires with the wrong default regardless of what the user chooses afterward.", h:"Check the network tab to confirm the consent update fires before the Google tag config call.", sev:"high",
+       impl:"In Google Tag Manager, set the consent defaults to run on the Consent Initialization trigger, which fires before every other tag. Confirm in GTM preview mode that the consent update happens before the Google tag loads."},
+      {t:"Conversion modeling is enabled to recover consent-denied conversions", w:"This is the mechanism that recovers a real share of conversions lost purely to rejected consent. Leaving it off understates true performance.", h:"Account settings, Data settings, Conversion modeling.", sev:"high",
+       impl:"In Google Ads, check Account settings, then Data settings, for Conversion modeling. It is usually on by default for accounts using consent mode. Confirm it has not been turned off."},
+      {t:"Regional consent settings are reviewed for every region that legally requires them", w:"A single global consent setup can under-apply or over-apply restrictions outside the region it was originally built for.", h:"GA4 Admin, Data Settings, Consent Overview, cross-check applicable regions.", sev:"std"},
+      {t:"The ad_storage-dependent GA4 to Google Ads data flow has been tested", w:"Google has moved to ad_storage alone governing this data flow. A banner that does not set it correctly can silently lose most of this connection.", h:"Test the consent flow end to end and confirm audiences and conversions still populate afterward.", sev:"std"},
+      {t:"Data processing terms are current in account settings", w:"An expired acceptance can restrict feature access, such as remarketing lists or Customer Match, without a clear error message.", h:"Tools and Settings, Setup, Policy centre, Data processing terms.", sev:"std"}
+    ]
+  },
+  {
+    id:"B", title:"Attribution, Bidding, and Data Integrity",
+    sub:"Checks that the signals feeding automated bidding match how the account is actually structured, so bidding decisions are based on the right numbers.",
+    items:[
+      {t:"The Smart Bidding strategy targets the correct conversion action", w:"A bid strategy optimizing toward a secondary or unrelated conversion goal will hit its target while missing the real business outcome entirely.", h:"Campaign settings, Bidding, check Conversion goals against the real business outcome.", sev:"crit",
+       impl:"Open the campaign's Bidding settings and check Conversion goals. Confirm it points to the real primary conversion action for this campaign, not a secondary action or a mismatched default."},
+      {t:"Cross-account conversion tracking is configured correctly with no double counting", w:"Under a manager account, the same conversion appearing in a child account and again in the roll-up overstates total performance.", h:"Manager account, Conversions, compare child-account totals against the roll-up total.", sev:"high",
+       impl:"In the manager account, compare each child account's conversion totals against the manager roll-up for the same period. If they do not reconcile, check whether the same conversion action is linked and counted in more than one account."},
+      {t:"Call conversions are captured through forwarding numbers or call tracking", w:"Without GCLID capture on calls, a phone-driven business is bidding blind on a large share of its real conversions.", h:"Confirm forwarding numbers are installed on paid landing pages, or that the call tracking platform passes GCLID back to Ads.", sev:"high",
+       impl:"Under Goals, Conversions, create a new conversion action under Calls. Choose calls from ads using call extensions, or calls to a forwarding number, and make sure the number range is installed on the paid landing pages."},
+      {t:"Conversion value rules are configured where they would change true value", w:"A lead from a target region is not worth the same as one from an excluded market. A flat value erases that difference from bidding.", h:"Tools, Bidding, Conversion value rules.", sev:"std",
+       impl:"Go to Goals, then Value rules, and create a new rule. Choose a condition such as device, location, or audience, set the value adjustment as add or multiply, and save."},
+      {t:"Overlapping platforms are checked for duplicate conversion counting", w:"A conversion tracked by both Google Ads and a bid management layer on top of it can be counted twice in blended reporting.", h:"Compare conversion totals in Ads directly against the third-party platform for the same date range.", sev:"std"}
+    ]
+  },
+  {
+    id:"X", title:"Cross-Channel and Landing Page Checks",
+    sub:"Tracking parameters usually break between the click and the CRM, not inside the tag itself. This section checks that path end to end.",
+    items:[
+      {t:"GCLID and UTM parameters survive the full funnel without being stripped", w:"CMS platforms, page speed tools, and some form builders strip query parameters by default. The click data can be gone before it reaches a form.", h:"Click a test ad, fill in a real form, and confirm the CRM lead record still has the GCLID and UTMs attached.", sev:"crit",
+       impl:"If parameters are being dropped, check the CMS or page speed and caching tool for a URL parameter stripping setting, and check that the form's hidden fields are set to auto-populate from the URL query string when the page loads."},
+      {t:"Redirect chains on landing pages are audited for parameter loss", w:"Every extra redirect hop, such as tracking template to CDN to CMS to final page, is another chance to drop the gclid parameter.", h:"Trace the full redirect chain in the browser's network panel.", sev:"high",
+       impl:"Remove any redirect hop that is not strictly necessary. Where a hop is required, confirm it forwards the full query string rather than only the base URL, the same fix used for the GCLID redirect chain check above."},
+      {t:"Third-party form platforms pass GCLID and UTMs through to the CRM", w:"An embedded form can still fail to forward hidden fields to its own backend if the integration is not configured to do so.", h:"Submit a test lead through the real production form and check the resulting CRM record for the hidden fields.", sev:"high",
+       impl:"In the form platform's settings, map the GCLID and UTM parameters to hidden fields, and confirm those hidden fields are included in the data sent to the CRM. Most platforms need this mapping set explicitly, it is rarely automatic."},
+      {t:"Thank-you pages load reliably and are not blocked by ad blockers or cached navigation", w:"A conversion tag that only fires on the confirmation page is invisible to Ads if that page is blocked, cached, or skipped by back-button navigation.", h:"Test with an ad blocker enabled, and by navigating back and forward through the funnel.", sev:"std"},
+      {t:"Tag firing is verified live across organic, paid, and returning-visitor sessions", w:"A tag that fires correctly for a fresh private session can still fail for returning visitors with existing cookies or browser extensions.", h:"Run all three session types through Tag Assistant or GA4 DebugView in one sitting.", sev:"std"}
+    ]
+  },
+  {
+    id:"O", title:"Keeping This Accurate",
+    sub:"Three habits that keep tracking reliable after today, instead of just on the day of the audit.",
+    items:[
+      {t:"Every active conversion action is documented: what it means, and who owns it", w:"Without a record, nobody notices when a conversion action quietly stops matching its original purpose after a site change.", h:"Keep a simple shared list: action name, business meaning, and last verified date.", sev:"std"},
+      {t:"This audit repeats on a fixed schedule, and after any relevant change", w:"Tracking breaks quietly after site updates, CRM changes, or consent banner changes. A one-time audit does not catch the next break.", h:"Set a recurring reminder, at minimum quarterly, and re-run this checklist after any tracking-related change.", sev:"std"},
+      {t:"The Diagnostics tab and conversion volume are checked regularly, not only when something looks wrong", w:"Tag health warnings can sit unnoticed for weeks if nobody looks until performance already dropped.", h:"Conversions, Diagnostics, reviewed as a standing part of the recurring audit.", sev:"std"}
+    ]
+  }
+];
+
+// Sort each section's checks by severity: critical, then high, then standard.
+const SEV_RANK = {crit:0, high:1, std:2};
+DATA.forEach(mod => {
+  mod.items = mod.items.slice().sort((a,b) => SEV_RANK[a.sev] - SEV_RANK[b.sev]);
+});
+
+const main = document.getElementById('main');
+const rail = document.getElementById('rail');
+let totalItems = 0, critTotal = 0, highTotal = 0;
+
+DATA.forEach((mod, mi) => {
+  const modNum = String(mi+1).padStart(2,'0');
+  const sec = document.createElement('section');
+  sec.className = 'mod';
+  sec.id = 'mod-' + mod.id;
+
+  const head = document.createElement('div');
+  head.className = 'mod-head';
+  head.innerHTML = `<span class="mod-num">${modNum}</span><h2>${mod.title}</h2>`;
+  sec.appendChild(head);
+
+  const sub = document.createElement('p');
+  sub.className = 'mod-sub';
+  sub.textContent = mod.sub;
+  sec.appendChild(sub);
+
+  mod.items.forEach((item, ii) => {
+    totalItems++;
+    if(item.sev === 'crit') critTotal++;
+    if(item.sev === 'high') highTotal++;
+    const code = mod.id + '-' + String(ii+1).padStart(2,'0');
+    const row = document.createElement('div');
+    row.className = 'check-row';
+    row.dataset.code = code;
+    row.dataset.sev = item.sev;
+    const sevLabel = item.sev === 'crit' ? 'Critical' : item.sev === 'high' ? 'High' : 'Standard';
+    const implHtml = item.impl ? `<details class="impl"><summary>How to implement</summary><div class="impl-body">${item.impl}</div></details>` : '';
+    row.innerHTML = `
+      <input type="checkbox" class="chk" id="chk-${code}">
+      <div class="row-body">
+        <label for="chk-${code}">
+          <div class="row-top">
+            <span class="code">${code}</span>
+            <span class="tag ${item.sev}">${sevLabel}</span>
+            <span class="check-title">${item.t}</span>
+          </div>
+          <div class="field"><span class="field-label">Why it matters</span><span class="field-value">${item.w}</span></div>
+          <div class="field"><span class="field-label">How to check</span><span class="field-value">${item.h}</span></div>
+        </label>
+        ${implHtml}
+      </div>`;
+    sec.appendChild(row);
+  });
+
+  main.appendChild(sec);
+
+  const link = document.createElement('a');
+  link.href = '#mod-' + mod.id;
+  link.dataset.target = 'mod-' + mod.id;
+  link.innerHTML = `<span>${modNum}. ${mod.title}</span><span class="sect-count" data-count="${mod.id}">0/${mod.items.length}</span>`;
+  rail.appendChild(link);
+});
+
+document.getElementById('overallCount').textContent = '0 / ' + totalItems;
+document.getElementById('highCount').parentElement.innerHTML = '<b id="highCount">0</b>/' + highTotal + ' high';
+document.getElementById('critCount').parentElement.innerHTML = '<b id="critCount">0</b>/' + critTotal + ' critical';
+
+const STORAGE_KEY = 'tracking-audit-state-v1';
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }catch(e){ return {}; }
+}
+function saveState(state){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+}
+
+function updateCounts(){
+  let done = 0, critDone = 0, highDone = 0;
+  DATA.forEach(mod => {
+    let modDone = 0;
+    mod.items.forEach((item, ii) => {
+      const code = mod.id + '-' + String(ii+1).padStart(2,'0');
+      const box = document.getElementById('chk-' + code);
+      if(box && box.checked){
+        modDone++; done++;
+        if(item.sev === 'crit') critDone++;
+        if(item.sev === 'high') highDone++;
+      }
+    });
+    const countEl = rail.querySelector(`[data-count="${mod.id}"]`);
+    if(countEl) countEl.textContent = modDone + '/' + mod.items.length;
+  });
+  document.getElementById('overallCount').textContent = done + ' / ' + totalItems;
+  document.getElementById('overallFill').style.width = (totalItems ? (done/totalItems*100) : 0) + '%';
+  document.getElementById('critCount').textContent = critDone;
+  document.getElementById('highCount').textContent = highDone;
+}
+
+function applyState(){
+  const state = loadState();
+  Object.keys(state).forEach(code => {
+    const box = document.getElementById('chk-' + code);
+    if(box && state[code]){
+      box.checked = true;
+      box.closest('.check-row').classList.add('done');
+    }
+  });
+  updateCounts();
+}
+
+main.addEventListener('change', (e) => {
+  if(!e.target.classList.contains('chk')) return;
+  const row = e.target.closest('.check-row');
+  row.classList.toggle('done', e.target.checked);
+  const state = loadState();
+  state[row.dataset.code] = e.target.checked;
+  saveState(state);
+  updateCounts();
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+  document.querySelectorAll('.chk').forEach(b => { b.checked = false; b.closest('.check-row').classList.remove('done'); });
+  updateCounts();
+});
+
+applyState();
+
+// Scroll-spy for the rail
+const links = Array.from(rail.querySelectorAll('a'));
+const sections = links.map(l => document.getElementById(l.dataset.target));
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const link = rail.querySelector(`a[data-target="${entry.target.id}"]`);
+    if(entry.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-15% 0px -75% 0px' });
+sections.forEach(s => s && spy.observe(s));
+</script>
